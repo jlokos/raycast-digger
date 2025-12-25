@@ -47,13 +47,13 @@ src/
 
 ---
 
-## Phase 1: Foundation
+## Phase 1: Foundation ✅
 
-### 1.1 Type Definitions
-- [ ] Create `src/types/index.ts`
-- [ ] Define `DiggerResult` interface (main data structure)
-- [ ] Define `CacheEntry` interface
-- [ ] Define category-specific interfaces:
+### 1.1 Type Definitions ✅
+- [x] Create `src/types/index.ts`
+- [x] Define `DiggerResult` interface (main data structure)
+- [x] Define `CacheEntry` interface
+- [x] Define category-specific interfaces:
   - `OverviewData`
   - `MetadataData`
   - `DiscoverabilityData`
@@ -64,28 +64,28 @@ src/
   - `HistoryData`
   - `DataFeedsData`
 
-### 1.2 URL Utilities
-- [ ] Create `src/utils/urlUtils.ts`
-- [ ] `normalizeUrl(url: string)`: Add protocol if missing, lowercase, remove trailing slash
-- [ ] `validateUrl(url: string)`: Check if valid URL format
-- [ ] `getDomain(url: string)`: Extract domain from URL
-- [ ] `getCacheKey(url: string)`: Generate consistent cache key
+### 1.2 URL Utilities ✅
+- [x] Create `src/utils/urlUtils.ts`
+- [x] `normalizeUrl(url: string)`: Add protocol if missing, lowercase, remove trailing slash
+- [x] `validateUrl(url: string)`: Check if valid URL format
+- [x] `getDomain(url: string)`: Extract domain from URL
+- [x] `getCacheKey(url: string)`: Generate consistent cache key
 
-### 1.3 Fetcher with Timeout
-- [ ] Create `src/utils/fetcher.ts`
-- [ ] `fetchWithTimeout(url: string, timeout?: number)`: Native fetch with AbortController
-- [ ] Default timeout: 5000ms
-- [ ] Return response metadata (status, headers, timing, final URL after redirects)
+### 1.3 Fetcher with Timeout ✅
+- [x] Create `src/utils/fetcher.ts`
+- [x] `fetchWithTimeout(url: string, timeout?: number)`: Native fetch with AbortController
+- [x] Default timeout: 5000ms
+- [x] Return response metadata (status, headers, timing, final URL after redirects)
 
-### 1.4 Cache Hook
-- [ ] Create `src/hooks/useCache.ts`
-- [ ] `useCache()` hook returning:
+### 1.4 Cache Hook ✅
+- [x] Create `src/hooks/useCache.ts`
+- [x] `useCache()` hook returning:
   - `getFromCache(url: string)`: Get cached entry if valid (< 48 hours)
   - `saveToCache(url: string, data: DiggerResult)`: Save with timestamp
   - `clearCache()`: Remove all entries
   - `refreshEntry(url: string)`: Force invalidate single entry
-- [ ] Implement LRU eviction (max 50 entries)
-- [ ] Cache structure in LocalStorage:
+- [x] Implement LRU eviction (max 50 entries)
+- [x] Cache structure in LocalStorage:
   ```typescript
   interface CacheEntry {
     url: string;
@@ -95,13 +95,13 @@ src/
   }
   ```
 
-### 1.5 Main Command Shell
-- [ ] Create `src/digger.tsx`
-- [ ] URL input via `arguments` (like open-graph extension)
-- [ ] Auto-prepend `https://` if no protocol
-- [ ] Show loading state while fetching
-- [ ] Render `List` with `isShowingDetail={true}`
-- [ ] Placeholder sections for each category
+### 1.5 Main Command Shell ✅
+- [x] Create `src/digger.tsx`
+- [x] URL input via `arguments` (like open-graph extension)
+- [x] Auto-prepend `https://` if no protocol
+- [x] Show loading state while fetching
+- [x] Render `List` with `isShowingDetail={true}`
+- [x] Placeholder sections for each category
 
 ---
 
