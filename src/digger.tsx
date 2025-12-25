@@ -1,8 +1,8 @@
-import { List, ActionPanel, Action } from "@raycast/api";
-import { useState, useEffect } from "react";
-import { normalizeUrl, validateUrl } from "./utils/urlUtils";
-import { useCache } from "./hooks/useCache";
-import { DiggerResult } from "./types";
+import { List } from "@raycast/api";
+import { useEffect } from "react";
+import { validateUrl } from "./utils/urlUtils";
+import { useFetchSite } from "./hooks/useFetchSite";
+import { Overview } from "./components/Overview";
 
 interface Arguments {
   url: string;
@@ -10,51 +10,17 @@ interface Arguments {
 
 export default function Command(props: { arguments: Arguments }) {
   const { url: inputUrl } = props.arguments;
-  const [url, setUrl] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState<DiggerResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const { getFromCache, saveToCache } = useCache();
+  const { data, isLoading, error, fetchSite } = useFetchSite(inputUrl);
 
   useEffect(() => {
     if (inputUrl) {
-      const processedUrl = normalizeUrl(inputUrl);
-      setUrl(processedUrl);
-
-      if (!validateUrl(processedUrl)) {
-        setError("Invalid URL format");
+      if (!validateUrl(inputUrl)) {
         return;
       }
-
-      fetchData(processedUrl);
+      fetchSite(inputUrl);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputUrl]);
-
-  const fetchData = async (targetUrl: string) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const cached = await getFromCache(targetUrl);
-      if (cached) {
-        setData(cached);
-        setIsLoading(false);
-        return;
-      }
-
-      const result: DiggerResult = {
-        url: targetUrl,
-        fetchedAt: Date.now(),
-      };
-
-      setData(result);
-      await saveToCache(targetUrl, result);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch data");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   if (error) {
     return (
@@ -66,22 +32,11 @@ export default function Command(props: { arguments: Arguments }) {
 
   return (
     <List isLoading={isLoading} isShowingDetail={true}>
-      <List.Section title="Overview">
-        <List.Item
-          title="Website Overview"
-          subtitle={url || "No URL provided"}
-          detail={
-            <List.Item.Detail
-              markdown={`# Overview\n\nURL: ${url || "N/A"}\n\nFetched: ${data?.fetchedAt ? new Date(data.fetchedAt).toLocaleString() : "N/A"}`}
-            />
-          }
-          actions={
-            <ActionPanel>
-              <Action.OpenInBrowser url={url} />
-            </ActionPanel>
-          }
-        />
-      </List.Section>
+      {data && (
+        <List.Section title="Overview">
+          <Overview data={data} />
+        </List.Section>
+      )}
 
       <List.Section title="Metadata">
         <List.Item

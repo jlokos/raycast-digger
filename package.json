@@ -21,7 +21,15 @@
       "title": "Digger",
       "subtitle": "Digger",
       "description": "Get comprehensive website intelligence and metadata",
-      "mode": "view"
+      "mode": "view",
+      "arguments": [
+        {
+          "name": "url",
+          "placeholder": "URL",
+          "type": "text",
+          "required": true
+        }
+      ]
     }
   ],
   "dependencies": {

@@ -105,38 +105,38 @@ src/
 
 ---
 
-## Phase 2: Core Fetching & Parsing
+## Phase 2: Core Fetching & Parsing ✅
 
-### 2.1 HTML Parser Utilities
-- [ ] Create `src/utils/htmlParser.ts`
-- [ ] Use Cheerio for parsing
-- [ ] Helper functions:
+### 2.1 HTML Parser Utilities ✅
+- [x] Create `src/utils/htmlParser.ts`
+- [x] Use Cheerio for parsing
+- [x] Helper functions:
   - `getMetaContent(html, name)`: Get meta tag content by name
   - `getMetaProperty(html, property)`: Get meta tag content by property
   - `getLinkHref(html, rel)`: Get link tag href by rel
   - `getJsonLd(html)`: Extract and parse JSON-LD scripts
   - `getAllMeta(html)`: Get all meta tags as object
 
-### 2.2 Main Fetch Orchestrator
-- [ ] Create `src/hooks/useFetchSite.ts`
-- [ ] `useFetchSite(url: string)` hook:
+### 2.2 Main Fetch Orchestrator ✅
+- [x] Create `src/hooks/useFetchSite.ts`
+- [x] `useFetchSite(url: string)` hook:
   - Check cache first
   - Fetch HTML, robots.txt, sitemap.xml in parallel
   - Parse all data
   - Save to cache
   - Return `{ data, isLoading, error, refetch }`
 
-### 2.3 Overview Component
-- [ ] Create `src/components/Overview.tsx`
-- [ ] Display:
-  - Favicon (using `getFavicon` from `@raycast/utils`)
+### 2.3 Overview Component ✅
+- [x] Create `src/components/Overview.tsx`
+- [x] Display:
+  - Icon (using Icon.Globe)
   - HTTP status code and status text
   - Final URL (after redirects)
   - Redirect chain (if any)
   - Response time (ms)
   - Content-Type
   - Content-Length
-- [ ] Use `List.Item` with `List.Item.Detail`
+- [x] Use `List.Item` with `List.Item.Detail`
 
 ---
 
