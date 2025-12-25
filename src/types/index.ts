@@ -1,5 +1,6 @@
 export interface DiggerResult {
   url: string;
+  html?: string;
   overview?: OverviewData;
   metadata?: MetadataData;
   discoverability?: DiscoverabilityData;

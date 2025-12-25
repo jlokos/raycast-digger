@@ -1,5 +1,5 @@
-import { List } from "@raycast/api";
-import { useEffect } from "react";
+import { List, Clipboard, getPreferenceValues, getSelectedText, BrowserExtension } from "@raycast/api";
+import { useEffect, useState } from "react";
 import { validateUrl } from "./utils/urlUtils";
 import { useFetchSite } from "./hooks/useFetchSite";
 import { Overview } from "./components/Overview";
@@ -8,21 +8,72 @@ import { Discoverability } from "./components/Discoverability";
 import { ResourcesAssets } from "./components/ResourcesAssets";
 
 interface Arguments {
-  url: string;
+  url?: string;
 }
 
 export default function Command(props: { arguments: Arguments }) {
   const { url: inputUrl } = props.arguments;
-  const { data, isLoading, error, fetchSite } = useFetchSite(inputUrl);
+  const preferences = getPreferenceValues<{
+    autoLoadUrlFromClipboard: boolean;
+    autoLoadUrlFromSelectedText: boolean;
+    enableBrowserExtensionSupport: boolean;
+  }>();
+  const [url, setUrl] = useState<string | undefined>(inputUrl);
+  const { data, isLoading, error, fetchSite, refetch } = useFetchSite(url);
 
   useEffect(() => {
-    if (inputUrl) {
-      if (!validateUrl(inputUrl)) {
-        return;
+    (async () => {
+      let finalUrl = inputUrl;
+
+      // If no URL provided, try auto-loading from various sources
+      if (!finalUrl) {
+        if (preferences.autoLoadUrlFromClipboard) {
+          const clipboardText = await Clipboard.readText();
+          if (clipboardText && validateUrl(clipboardText)) {
+            finalUrl = clipboardText;
+            setUrl(finalUrl);
+            return;
+          }
+        }
+
+        if (preferences.autoLoadUrlFromSelectedText) {
+          try {
+            const selectedText = await getSelectedText();
+            if (selectedText && validateUrl(selectedText)) {
+              finalUrl = selectedText;
+              setUrl(finalUrl);
+              return;
+            }
+          } catch {
+            // Suppress the error if Raycast didn't find any selected text
+          }
+        }
+
+        if (preferences.enableBrowserExtensionSupport) {
+          try {
+            const tabUrl = (await BrowserExtension.getTabs()).find((tab) => tab.active)?.url;
+            if (tabUrl && validateUrl(tabUrl)) {
+              finalUrl = tabUrl;
+              setUrl(finalUrl);
+              return;
+            }
+          } catch {
+            // Suppress the error if Raycast didn't find browser extension
+          }
+        }
       }
-      fetchSite(inputUrl);
+
+      if (finalUrl && validateUrl(finalUrl)) {
+        setUrl(finalUrl);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (url && validateUrl(url)) {
+      fetchSite(url);
     }
-  }, [inputUrl]);
+  }, [url]);
 
   if (error) {
     return (
@@ -36,25 +87,25 @@ export default function Command(props: { arguments: Arguments }) {
     <List isLoading={isLoading} isShowingDetail={true}>
       {data && (
         <List.Section title="Overview">
-          <Overview data={data} />
+          <Overview data={data} onRefresh={refetch} />
         </List.Section>
       )}
 
       {data && (
         <List.Section title="Metadata">
-          <MetadataSemantics data={data} />
+          <MetadataSemantics data={data} onRefresh={refetch} />
         </List.Section>
       )}
 
       {data && (
         <List.Section title="Discoverability">
-          <Discoverability data={data} />
+          <Discoverability data={data} onRefresh={refetch} />
         </List.Section>
       )}
 
       {data && (
         <List.Section title="Resources">
-          <ResourcesAssets data={data} />
+          <ResourcesAssets data={data} onRefresh={refetch} />
         </List.Section>
       )}
 

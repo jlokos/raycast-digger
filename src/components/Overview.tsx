@@ -1,11 +1,13 @@
 import { List, Icon } from "@raycast/api";
 import { DiggerResult } from "../types";
+import { Actions } from "../actions";
 
 interface OverviewProps {
   data: DiggerResult;
+  onRefresh: () => void;
 }
 
-export function Overview({ data }: OverviewProps) {
+export function Overview({ data, onRefresh }: OverviewProps) {
   const { overview, networking, performance } = data;
 
   const statusText = networking?.statusCode
@@ -51,6 +53,7 @@ ${performance?.pageSize ? `- **Page Size**: ${formatBytes(performance.pageSize)}
       subtitle={overview?.title || data.url}
       icon={Icon.Globe}
       detail={<List.Item.Detail markdown={markdown} />}
+      actions={<Actions data={data} url={data.url} onRefresh={onRefresh} />}
     />
   );
 }

@@ -7,7 +7,7 @@ import { DiggerResult, OverviewData, MetadataData, DiscoverabilityData } from ".
 import { getMetaContent, getLinkHref, getJsonLd, getAllMeta } from "../utils/htmlParser";
 import * as cheerio from "cheerio";
 
-export function useFetchSite(url: string) {
+export function useFetchSite(url?: string) {
   const [data, setData] = useState<DiggerResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -149,6 +149,7 @@ export function useFetchSite(url: string) {
 
         const result: DiggerResult = {
           url: normalizedUrl,
+          html,
           overview,
           metadata,
           discoverability,

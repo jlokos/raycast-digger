@@ -1,11 +1,13 @@
 import { List, Icon, Color } from "@raycast/api";
 import { DiggerResult } from "../types";
+import { Actions } from "../actions";
 
 interface DiscoverabilityProps {
   data: DiggerResult;
+  onRefresh: () => void;
 }
 
-export function Discoverability({ data }: DiscoverabilityProps) {
+export function Discoverability({ data, onRefresh }: DiscoverabilityProps) {
   const { discoverability } = data;
 
   const hasRobots = !!discoverability?.robots;
@@ -72,6 +74,7 @@ ${alternatesSection}
       subtitle={subtitle || "Limited discoverability"}
       icon={getStatusIcon(hasCanonical || hasSitemap || hasRss)}
       detail={<List.Item.Detail markdown={markdown} />}
+      actions={<Actions data={data} url={data.url} onRefresh={onRefresh} />}
     />
   );
 }

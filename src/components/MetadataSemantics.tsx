@@ -1,11 +1,13 @@
 import { List, Icon, Color } from "@raycast/api";
 import { DiggerResult } from "../types";
+import { Actions } from "../actions";
 
 interface MetadataSemanticsProps {
   data: DiggerResult;
+  onRefresh: () => void;
 }
 
-export function MetadataSemantics({ data }: MetadataSemanticsProps) {
+export function MetadataSemantics({ data, onRefresh }: MetadataSemanticsProps) {
   const { overview, metadata, discoverability } = data;
 
   const hasOpenGraph = metadata?.openGraph && Object.keys(metadata.openGraph).length > 0;
@@ -80,6 +82,7 @@ ${jsonLdSection}
       subtitle={subtitle || "No metadata found"}
       icon={getStatusIcon(hasOpenGraph || hasTwitterCard || hasJsonLd || !!overview?.title)}
       detail={<List.Item.Detail markdown={markdown} />}
+      actions={<Actions data={data} url={data.url} onRefresh={onRefresh} />}
     />
   );
 }

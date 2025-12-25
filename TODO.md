@@ -173,30 +173,30 @@ src/
 
 ---
 
-## Phase 4: Actions
+## Phase 4: Actions ✅
 
-### 4.1 Shared Actions Component
-- [ ] Create `src/actions/Actions.tsx`
-- [ ] Common actions:
+### 4.1 Shared Actions Component ✅
+- [x] Create `src/actions/Actions.tsx`
+- [x] Common actions:
   - **Open in Browser**: Open URL in default browser
   - **Copy URL**: Copy the analyzed URL
   - **Refresh**: Force re-fetch and update cache
   - **Clear Cache**: Remove all cached entries
 
-### 4.2 Copy Actions
-- [ ] **Copy as JSON**: Full structured data export
-- [ ] **Copy as Markdown**: Formatted report
-- [ ] **Copy Individual Values**: Context-aware per category
+### 4.2 Copy Actions ✅
+- [x] **Copy as JSON**: Full structured data export
+- [x] **Copy as Markdown**: Formatted report
+- [x] **Copy Individual Values**: Context-aware per category
   - Copy Title
   - Copy Description
   - Copy OG Image URL
   - Copy Favicon URL
   - etc.
 
-### 4.3 External Actions
-- [ ] **Open in Wayback Machine**: Link to archive.org
-- [ ] **View Page Source**: Open view-source: URL
-- [ ] **Check on Google**: Search for site:domain
+### 4.3 External Actions ✅
+- [x] **Open in Wayback Machine**: Link to archive.org
+- [x] **View Page Source**: Open view-source: URL
+- [x] **Check on Google**: Search for site:domain
 
 ---
 

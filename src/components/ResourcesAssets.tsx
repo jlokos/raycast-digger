@@ -1,11 +1,13 @@
 import { List, Icon, Color } from "@raycast/api";
 import { DiggerResult } from "../types";
+import { Actions } from "../actions";
 
 interface ResourcesAssetsProps {
   data: DiggerResult;
+  onRefresh: () => void;
 }
 
-export function ResourcesAssets({ data }: ResourcesAssetsProps) {
+export function ResourcesAssets({ data, onRefresh }: ResourcesAssetsProps) {
   const { resources, discoverability } = data;
 
   const hasStylesheets = resources?.stylesheets && resources.stylesheets.length > 0;
@@ -96,8 +98,9 @@ ${linksSection}
     <List.Item
       title="Resources & Assets"
       subtitle={counts.join(", ") || "No resources found"}
-      icon={getStatusIcon(hasStylesheets || hasScripts || hasImages)}
+      icon={getStatusIcon(!!(hasStylesheets || hasScripts || hasImages))}
       detail={<List.Item.Detail markdown={markdown} />}
+      actions={<Actions data={data} url={data.url} onRefresh={onRefresh} />}
     />
   );
 }
