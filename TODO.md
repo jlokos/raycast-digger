@@ -170,6 +170,11 @@ src/
   - Images (with alt text)
   - Special links (preconnect, DNS-prefetch, etc.)
   - RSS/Atom feed URLs
+- [ ] Add visual grid of visual assets
+  - Open Graph Image
+  - Twitter Card Image
+  - Favicon
+  - Manifest Assets
 
 ---
 
@@ -200,17 +205,17 @@ src/
 
 ---
 
-## Phase 5: Network & DNS
+## Phase 5: Network & DNS ✅
 
 ### 5.1 Networking & Security
-- [ ] Create `src/components/NetworkingSecurity.tsx`
-- [ ] Display HTTP headers:
+- [x] Create `src/components/NetworkingSecurity.tsx`
+- [x] Display HTTP headers:
   - Server
   - X-Powered-By
   - Cache-Control
   - ETag
   - Last-Modified
-- [ ] Security headers analysis:
+- [x] Security headers analysis:
   - Content-Security-Policy (CSP)
   - Strict-Transport-Security (HSTS)
   - X-Frame-Options
@@ -218,19 +223,19 @@ src/
   - X-XSS-Protection
   - Referrer-Policy
   - Permissions-Policy
-- [ ] Show status indicators (✓ present, ✗ missing)
+- [x] Show status indicators (✓ present, ✗ missing)
 
 ### 5.2 DNS & Certificates
-- [ ] Create `src/utils/dnsUtils.ts`
-- [ ] Create `src/components/DNSCertificates.tsx`
-- [ ] DNS lookups (using Node.js `dns` module):
+- [x] Create `src/utils/dnsUtils.ts`
+- [x] Create `src/components/DNSCertificates.tsx`
+- [x] DNS lookups (using Node.js `dns` module):
   - A records (IPv4)
   - AAAA records (IPv6)
   - CNAME records
   - MX records
   - TXT records
   - NS records
-- [ ] TLS certificate info (using `tls` module):
+- [x] TLS certificate info (using `tls` module):
   - Issuer
   - Subject
   - Valid from/to
@@ -291,6 +296,7 @@ src/
 - [ ] Color-coded status tags
 - [ ] Proper separators in metadata
 - [ ] Keyboard shortcuts for common actions
+- [ ] Don't instantly pop-to-root when actioning; persist last view in Raycast UI
 
 ---
 

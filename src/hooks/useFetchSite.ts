@@ -5,12 +5,14 @@ import { normalizeUrl } from "../utils/urlUtils";
 import { useCache } from "./useCache";
 import { DiggerResult, OverviewData, MetadataData, DiscoverabilityData } from "../types";
 import { getMetaContent, getLinkHref, getJsonLd, getAllMeta } from "../utils/htmlParser";
+import { performDNSLookup, getTLSCertificateInfo, CertificateInfo } from "../utils/dnsUtils";
 import * as cheerio from "cheerio";
 
 export function useFetchSite(url?: string) {
   const [data, setData] = useState<DiggerResult | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [certificateInfo, setCertificateInfo] = useState<CertificateInfo | null>(null);
   const { getFromCache, saveToCache } = useCache();
 
   const fetchSite = useCallback(
@@ -147,6 +149,18 @@ export function useFetchSite(url?: string) {
           }
         });
 
+        const urlObj = new URL(normalizedUrl);
+        const hostname = urlObj.hostname;
+
+        const [dnsData, certInfo] = await Promise.all([
+          performDNSLookup(hostname).catch(() => undefined),
+          getTLSCertificateInfo(hostname).catch(() => null),
+        ]);
+
+        if (certInfo) {
+          setCertificateInfo(certInfo);
+        }
+
         const result: DiggerResult = {
           url: normalizedUrl,
           html,
@@ -165,6 +179,7 @@ export function useFetchSite(url?: string) {
             finalUrl,
             server: headers.server,
           },
+          dns: dnsData,
           performance: {
             loadTime: timing,
             pageSize: html.length,
@@ -195,5 +210,5 @@ export function useFetchSite(url?: string) {
     }
   }, [url, fetchSite]);
 
-  return { data, isLoading, error, refetch, fetchSite };
+  return { data, isLoading, error, refetch, fetchSite, certificateInfo };
 }

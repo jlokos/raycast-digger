@@ -6,6 +6,8 @@ import { Overview } from "./components/Overview";
 import { MetadataSemantics } from "./components/MetadataSemantics";
 import { Discoverability } from "./components/Discoverability";
 import { ResourcesAssets } from "./components/ResourcesAssets";
+import { NetworkingSecurity } from "./components/NetworkingSecurity";
+import { DNSCertificates } from "./components/DNSCertificates";
 
 interface Arguments {
   url?: string;
@@ -19,7 +21,7 @@ export default function Command(props: { arguments: Arguments }) {
     enableBrowserExtensionSupport: boolean;
   }>();
   const [url, setUrl] = useState<string | undefined>(inputUrl);
-  const { data, isLoading, error, fetchSite, refetch } = useFetchSite(url);
+  const { data, isLoading, error, fetchSite, refetch, certificateInfo } = useFetchSite(url);
 
   useEffect(() => {
     (async () => {
@@ -109,21 +111,17 @@ export default function Command(props: { arguments: Arguments }) {
         </List.Section>
       )}
 
-      <List.Section title="Networking">
-        <List.Item
-          title="Networking"
-          subtitle="IP, Headers, Redirects"
-          detail={<List.Item.Detail markdown="# Networking\n\n*Coming soon*" />}
-        />
-      </List.Section>
+      {data && (
+        <List.Section title="Networking & Security">
+          <NetworkingSecurity data={data} onRefresh={refetch} />
+        </List.Section>
+      )}
 
-      <List.Section title="DNS">
-        <List.Item
-          title="DNS"
-          subtitle="A, AAAA, MX, TXT Records"
-          detail={<List.Item.Detail markdown="# DNS\n\n*Coming soon*" />}
-        />
-      </List.Section>
+      {data && (
+        <List.Section title="DNS & Certificates">
+          <DNSCertificates data={data} onRefresh={refetch} certificateInfo={certificateInfo} />
+        </List.Section>
+      )}
 
       <List.Section title="Performance">
         <List.Item
